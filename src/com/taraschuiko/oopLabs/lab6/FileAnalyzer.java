@@ -4,22 +4,21 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class FileAnalyzer {
+public class FileAnalyzer<Type> {
     private File file;
-    private int n;
+    private long n;
+    private Type chain;
 
     public FileAnalyzer() {
         this.file = new File("");
         this.n = 0;
+        this.chain = null;
     }
 
-    public FileAnalyzer(String path) {
+    public FileAnalyzer(String path, Type chain) {
         this.file = new File(path);
-    }
-
-    public FileAnalyzer(String path, int n) {
-        this.file = new File(path);
-        this.n = n;
+        n = file.length();
+        this.chain = chain;
     }
 
     public FileAnalyzer(FileAnalyzer fileAnalyzer) {
@@ -27,11 +26,11 @@ public class FileAnalyzer {
         this.n = fileAnalyzer.getN();
     }
 
-    public boolean hasChain(String chain) {
+    public boolean hasChain() {
         try {
             Scanner scanner = new Scanner(file);
             while (scanner.hasNextLine()) {
-                if (scanner.nextLine().contains(chain)) {
+                if (scanner.nextLine().contains("" + chain)) {
                     return true;
                 }
             }
@@ -42,7 +41,7 @@ public class FileAnalyzer {
         return false;
     }
 
-    public int numberOfChains(String chain) {
+    public int numberOfChains() {
         try {
             Scanner scanner = new Scanner(file);
             String fileContent = "";
@@ -53,10 +52,10 @@ public class FileAnalyzer {
             int lastIndex = 0;
             int count = 0;
             while(lastIndex != -1){
-                lastIndex = fileContent.indexOf(chain,lastIndex);
+                lastIndex = fileContent.indexOf("" + chain, lastIndex);
                 if(lastIndex != -1){
                     count ++;
-                    lastIndex += chain.length();
+                    lastIndex += ("" + chain).length();
                 }
             }
             scanner.close();
@@ -72,7 +71,7 @@ public class FileAnalyzer {
         return file;
     }
 
-    public int getN() {
+    public long getN() {
         return n;
     }
 }
